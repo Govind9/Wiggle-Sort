@@ -1,5 +1,5 @@
-ggle(arr):
-  2         print arr
+wiggle(arr):
+  2       print arr
     3         if len(arr) == 1:
       4                 return arr
         5         m, M = 7, 9
@@ -46,3 +46,5 @@ ggle(arr):
 						     46                 arr = mins + maxs
 						      47         if len(arr) % 2 == 0:
 						       48                 mid = len(arr) / 2
+						else:	
+							mid = (len(arr) / 2) + 1
