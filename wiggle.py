@@ -1,57 +1,68 @@
+Len = 10
+combo = []
+s = '0123456789'
+
+def permute(x):
+	if len(x) == Len:
+		p = ''
+		for i in x:
+			n = int(i)
+			p = p + s[n]
+		combo.append(p)
+	for i in range(Len):
+		if s[i] not in x:
+			permute(x + s[i])
+
 def wiggle(arr):
-	print arr
-	if len(arr) == 1:
+	if len(arr) < 2:
 		return arr
-	m, M = 7, 9
-	while M > m:
+	l, r = 0, len(arr) - 1
+	m, M = 9, 7 #Just to make sure that loop begins initially
+	while True:
 		l, r = 0, len(arr) - 1
-		mins = []
-		maxs = []
-		if arr[l] < arr[r]:
-			M = arr[l]
-			if arr[l + 1] > arr[r]:
-				m = arr[l + 1]
-			else:
-				m = arr[r]
-		else:
+		pos_m, pos_M = r, l
+		m = arr[r]
+		M = arr[l]
+		if arr[l] > arr[r]:
+			m = arr[l]
 			M = arr[r]
-			if arr[r - 1] > arr[l]:
-				m = arr[r - 1]
-			else:
-				m = arr[l]
-		while l <= r:
-			if arr[l] < arr[r]:
-				mins.append(arr[l])
-				if arr[l] > M:
-					M = arr[l]
-				l = l + 1
-			else:
-				mins.append(arr[r])
-				if arr[r] > M:
-					M = arr[r]
-				r = r - 1
-			if r < l:
-				break
-			
+			pos_m, pos_M = l, r
+		while l < r:
 			if arr[l] > arr[r]:
-				maxs.append(arr[l])
-				if arr[l] < m:
-					m = arr[l]
-				l = l + 1
-			else:
-				maxs.append(arr[r])
-				if arr[r] < m:
-					m = arr[r]
-				r = r - 1
-		arr = mins + maxs
-	if len(arr) % 2 == 0:
-		mid = len(arr) / 2
-	else:
-		mid = (len(arr) / 2) + 1
+				temp = arr[l]
+				arr[l] = arr[r]
+				arr[r] = temp
+			if arr[l] > M:
+				M = arr[l]
+				pos_M = l
+			if arr[r] < m:
+				m = arr[r]
+				pos_m = r
+			l = l + 1
+			r = r - 1
+		if M < m:
+			break
+		temp = arr[pos_m]
+		arr[pos_m] = arr[pos_M]
+		arr[pos_M] = temp
+	mid = len(arr) / 2
+	if len(arr) % 2 != 0:
+		if arr[mid] < M:
+			mid = mid + 1
+			
 	arr = wiggle(arr[:mid]) + wiggle(arr[mid:])
 	return arr
 
-arr = [9, 8, 7, 6, 5, 4, 3, 2, 1]
-arr = wiggle(arr)
-print arr
 
+#print wiggle([0, 1, 4, 2, 3, 6, 5, 9, 7, 8])
+
+#exit()
+permute('')
+c = 0
+for arr in combo:
+	c = c + 1
+	arr = list(arr)
+	for i in range(len(arr)):
+		arr[i] = int(arr[i])
+	if wiggle(arr) != [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]:
+		print arr
